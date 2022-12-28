@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "public",
+			"path": "../../../Praktikum PAW/uas/pos-uas-paw/frontend/public"
+		},
+		{
+			"name": "coba",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
