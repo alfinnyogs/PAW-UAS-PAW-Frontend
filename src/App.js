@@ -60,7 +60,7 @@ const router = createBrowserRouter([
     element: <AddKasirLayoutManager />,
   },
   {
-    path: '/manager/kelola-kasir/edit-kasir',
+    path: '/manager/kelola-kasir/edit-kasir/:id',
     element: <EditLayoutKasirManager />,
   },
   {

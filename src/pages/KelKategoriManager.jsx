@@ -1,7 +1,26 @@
-import React from "react"; 
+import React, {useState, useEffect} from "react"; 
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import {Link } from "react-router-dom";
 
 const KelKategoriManager = () => {
+    const [kategori, setKategoris] = useState([]);
+  
+    useEffect(() => {
+      getKategoris();
+    }, []);
+  
+    const getKategoris = async () => {
+      const response = await axios.get("http://localhost:5000/kategoris");
+      setKategoris(response.data);
+    };
+  
+    const deleteKategori = async (uuid) => {
+      await axios.delete(`http://localhost:5000/kategori/${uuid}`);
+      getKategoris();
+    };
+  
+
   return (
     <div>
         <h2 className="subtitle mt-1">Data Kategori</h2>
@@ -14,19 +33,25 @@ const KelKategoriManager = () => {
         <thead>
           <tr>
             <th>No</th>
+            <th>Kode Kategori</th>
             <th>Nama Kategori</th>
             <th>Aksi</th>
           </tr>
         </thead>
         <tbody>
-            <tr>
-              <td></td>
-              <td></td>
+        {
+              kategori && kategori.map((data,index)=>(
+                <tr>
+              <td>{index + 1}</td>
+              <td>{kategori.uuid}</td>
+              <td>{kategori.nama_kategori}</td>
               <td>
-                <button class="button m-1 is-info"> Edit </button>
-                <button class="button m-1 is-danger"> Hapus </button> 
+                <Link class="button m-1 is-info" to={`/manager/kelola-kategori/edit-kategori/${kategori.uuid}`}> Edit </Link>
+                <Link class="button m-1 is-danger" onClick={() => deleteKategori(kategori.uuid)}> Hapus </Link> 
               </td>
             </tr>
+            ))
+            }
         </tbody>
       </table>
     </div>

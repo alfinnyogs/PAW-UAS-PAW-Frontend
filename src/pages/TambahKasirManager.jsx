@@ -1,36 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const TambahKasirManager= () => {
+const [name, setName] = useState("");
+const [email, setEmail] = useState("");
+const [password, setPassword] = useState("");
+const [role, setRole] = useState("");
+const [msg, setMsg] = useState("");
+const navigate = useNavigate();
+
+const saveKasir = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post("http://localhost:5000/users", {
+        name: name,
+        email: email,
+        password: password,
+        role: role,
+
+      });
+      navigate("/manager/kelola-kasir");
+    } catch (error) {
+      if (error.response) {
+        setMsg(error.response.data.msg);
+      }
+    }
+  };
+
   return (        
         <div>
             <h2 className="subtitle mt-2">Tambah Kasir</h2>
                 <div className="card is-shadowless">
                 <div className="card-content">
                 <div className="content">
-                    <form onSubmit="">
-                    <p className="has-text-centered"></p>
+                    <form onSubmit={saveKasir}>
+                    <p className="has-text-centered">{msg}</p>
                     <div className="field">
                         <label className="label">Nama</label>
                         <div className="control">
-                        <input type="text" className="input" value="" onChange="" placeholder="Nama"/>
+                        <input type="text" className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Nama"/>
                         </div>
                     </div>
                     <div className="field">
                         <label className="label">Email</label>
                         <div className="control">
-                        <input type="text" className="input" value="" onChange="" placeholder="Email"/>
+                        <input type="text" className="input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
                         </div>
                     </div>
                     <div className="field">
                         <label className="label">Password</label>
                         <div className="control">
-                        <input type="text" className="input" value="" onChange="" placeholder="Password"/>
+                        <input type="text" className="input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"/>
                         </div>
                     </div>
                     <div className="field">
                         <label className="label">Role</label>
                         <div className="control">
-                        <input type="text" className="input" value="" onChange="" placeholder="kasir"/>
+                        <input type="text" className="input" value={role} onChange={(e) => setRole(e.target.value)} placeholder="kasir"/>
                         </div>
                     </div>
                     <div className="field">

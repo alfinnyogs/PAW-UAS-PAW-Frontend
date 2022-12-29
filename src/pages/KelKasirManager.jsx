@@ -1,7 +1,25 @@
-import React from "react"; 
+import React,{useEffect,useState} from "react"; 
+import axios from "axios"; 
 import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const KelKasirManager = () => {
+  const [datas, setDatas] = useState([]);
+
+  useEffect(() => {
+    getDatas();
+  }, []);
+
+  const getDatas = async () => {
+    const response = await axios.get("http://localhost:5000/users");
+    setDatas(response.data);
+  };
+
+  const DeleteUser = async (uuid) => {
+    await axios.delete(`http://localhost:5000/user/${uuid}`);
+    getDatas();
+  };
+
   return (
     <div>
         <h2 className="subtitle mt-1">Data Kasir</h2>
@@ -21,16 +39,20 @@ const KelKasirManager = () => {
           </tr>
         </thead>
         <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+          {
+              datas && datas.map((data,index)=>(
+                <tr>
+              <td>{index + 1}</td>
+              <td>{data.name}</td>
+              <td>{data.email}</td>
+              <td>{data.role}</td>
               <td>
-                <button class="button m-1 is-info"> Edit </button>
-                <button class="button m-1 is-danger"> Hapus </button> 
+                <Link class="button m-1 is-info" to={`/manager/kelola-kasir/edit-kasir/${data.uuid}`}> Edit </Link>
+                <Link class="button m-1 is-danger" onClick={() => DeleteUser(data.uuid)}> Hapus </Link> 
               </td>
             </tr>
+            ))
+            }
         </tbody>
       </table>
     </div>
